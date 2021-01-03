@@ -1,0 +1,75 @@
+version: '3.4'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - remittance
+  
+  mysql:
+    image: mysql:8.0.22
+    container_name: mysql
+    restart: unless-stopped
+    tty: "true"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: remittance
+      MYSQL_USER: remittance
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - remittance
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build:
+      args:
+        user: remittance
+        uid: 1000
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "9000:9000"
+    networks:
+      - remittance
+    user: remittance
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    depends_on: 
+      - mysql
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - 8081:80
+    volumes:
+      - /sessions
+    networks:
+      - remittance
+
+networks:
+  remittance:
+    driver: bridge
+
+volumes:
+  mysql-data:
