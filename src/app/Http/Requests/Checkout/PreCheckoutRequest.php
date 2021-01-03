@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Checkout;
 
+use App\Exceptions\Api\ErrorException;
 use Illuminate\Foundation\Http\FormRequest;
+
+use Illuminate\Contracts\Validation\Validator;
 
 class PreCheckoutRequest extends FormRequest
 {
@@ -19,5 +22,10 @@ class PreCheckoutRequest extends FormRequest
       'amount' => 'required|numeric|min:1',
       'user_voucher_id' => 'int'
     ];
+  }
+
+  protected function failedValidation(Validator $validator)
+  {
+    throw new ErrorException($validator->errors()->first());
   }
 }

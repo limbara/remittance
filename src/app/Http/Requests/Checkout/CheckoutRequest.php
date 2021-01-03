@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Checkout;
 
+use App\Exceptions\Api\ErrorException;
 use Illuminate\Foundation\Http\FormRequest;
+
+use Illuminate\Contracts\Validation\Validator;
 
 class CheckoutRequest extends FormRequest
 {
@@ -24,7 +27,12 @@ class CheckoutRequest extends FormRequest
       'recipient.email' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.account_number,recipient.bank_id|string:max:254',
       'recipient.account_number' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.bank_id|string|max:100',
       'recipient.bank_id' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.account_number|int',
-      'requirements' => 'json'
+      'requirements' => 'json|nullable'
     ];
+  }
+
+  protected function failedValidation(Validator $validator)
+  {
+    throw new ErrorException($validator->errors()->first());
   }
 }
