@@ -72,7 +72,7 @@ class InitTables extends Migration
       $table->bigIncrements('id');
       $table->string('currency_from', 3);
       $table->string('currency_to', 3);
-      $table->decimal('conversion_rate', 10, 6);
+      $table->decimal('conversion_rate', 11, 6);
       $table->timestamps();
     });
 
@@ -208,7 +208,7 @@ class InitTables extends Migration
       $table->primary('id');
       $table->string('currency_from', 3);
       $table->string('currency_to', 3);
-      $table->decimal('conversion_rate', 10, 6);
+      $table->decimal('conversion_rate', 11, 6);
       $table->unsignedBigInteger('total_amount');
       $table->unsignedBigInteger('transfer_amount');
       $table->unsignedBigInteger('amount');
