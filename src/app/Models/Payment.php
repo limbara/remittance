@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Payment extends Model
 {
@@ -17,6 +18,8 @@ class Payment extends Model
 
   protected $fillable = [
     'id',
+    'transaction_id',
+    'payment_method_id',
     'created_at'
   ];
 
@@ -33,5 +36,10 @@ class Payment extends Model
   public function paymentStatuses()
   {
     return $this->hasMany(PaymentStatus::class);
+  }
+  
+  public static function generateID(): string
+  {
+    return Str::uuid();
   }
 }

@@ -12,7 +12,9 @@ class CountryHasPaymentMethod extends Pivot
   use HasFactory;
 
   protected $fillable = [
-    'status'
+    'status',
+    'country_id',
+    'payment_method_id'
   ];
 
   public function country()

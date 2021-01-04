@@ -58,7 +58,12 @@ class Transaction extends Model
     return $this->hasMany(TransactionStatus::class);
   }
 
-  public static function generateID()
+  public function isExpired(): bool
+  {
+    return Carbon::createFromDate($this->expired_at)->isPast();
+  }
+
+  public static function generateID(): string
   {
     return Str::uuid();
   }

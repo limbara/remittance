@@ -27,4 +27,13 @@ Route::group([
   Route::post('/precheckout', 'CheckoutController@precheckout');
 
   Route::post('/checkout', 'CheckoutController@checkout');
+
+  Route::group([
+    'prefix' => '/transactions'
+  ], function () {
+
+    Route::get('/{transactionId}', 'TransactionController@detail');
+
+    Route::post('/{transactionId}/pay', 'TransactionController@pay');
+  });
 });
