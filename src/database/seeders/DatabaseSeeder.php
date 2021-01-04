@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PaymentMethod;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +21,8 @@ class DatabaseSeeder extends Seeder
       UserSeeder::class,
       RelationshipSeeder::class,
       NotificationSeeder::class,
-      TransactionRequirementSeeder::class
+      TransactionRequirementSeeder::class,
+      PaymentMethodSeeder::class,
     ]);
   }
 }

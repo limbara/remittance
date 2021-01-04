@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\CountryHasPaymentMethodStatus;
+use App\Enums\PaymentMethod as EnumsPaymentMethod;
 use App\Models\Country;
 use App\Models\CountryHasPaymentMethod;
 use App\Models\PaymentMethod;
@@ -21,11 +22,11 @@ class PaymentMethodSeeder extends Seeder
   {
     $paymentMethods = [
       [
-        'id' => 1,
+        'id' => EnumsPaymentMethod::CREDIT_CARD,
         'name' => 'Kartu Kredit'
       ],
       [
-        'id' => 2,
+        'id' => EnumsPaymentMethod::BANK_TRANSFER,
         'name' => 'Bank Transfer'
       ],
     ];
@@ -41,15 +42,17 @@ class PaymentMethodSeeder extends Seeder
 
     $countries = Country::all();
 
-    $countries->each(function (Country $country) use ($paymentMethods) {
+    $countries->each(function (Country $country) use ($paymentMethods, $now) {
 
-      CountryHasPaymentMethod::insert(array_map(function ($paymentMethod) use ($country) {
+      CountryHasPaymentMethod::insert(array_map(function ($paymentMethod) use ($country, $now) {
         $faker = Factory::create();
 
         return [
           'status' => $faker->boolean(80) ? CountryHasPaymentMethodStatus::ACTIVE : CountryHasPaymentMethodStatus::INACTIVE,
           'payment_method_id' => $paymentMethod['id'],
-          'country_id' => $country->id
+          'country_id' => $country->id,
+          'created_at' => $now,
+          'updated_at' => $now
         ];
       }, $paymentMethods));
     });
