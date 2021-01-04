@@ -20,10 +20,6 @@ Route::group([
 ], function () {
   Route::post('/profile', 'ProfileController@create');
 
-  Route::get('/kampret', function () {
-    return 'woww';
-  });
-
   Route::post('/precheckout', 'CheckoutController@precheckout');
 
   Route::post('/checkout', 'CheckoutController@checkout');
