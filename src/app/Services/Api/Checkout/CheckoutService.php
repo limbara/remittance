@@ -18,6 +18,7 @@ use App\Services\Api\Checkout\Models\NewRecipient;
 use App\Services\Api\Checkout\Models\NoRecipient;
 use App\Services\Api\Checkout\Models\RegisteredRecipient;
 use App\Services\Api\Checkout\VoucherObject;
+use App\Services\Api\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -164,6 +165,8 @@ class CheckoutService
       if ($this->isUsingVoucher()) {
         UserHasVoucher::find($this->userVoucherId)->delete();
       }
+
+      NotificationService::notifyTransactionCreated($transaction, $this->user);
 
       DB::commit();
 
