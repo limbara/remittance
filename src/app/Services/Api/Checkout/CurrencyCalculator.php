@@ -122,7 +122,7 @@ class CurrencyCalculator
       return 0;
     }
 
-    $transferredAmount = round($this->amount / $this->getConversionRate(), $this->currencyTo->minor_unit, PHP_ROUND_HALF_UP);
+    $transferredAmount = round($this->amount * $this->getConversionRate(), $this->currencyTo->minor_unit, PHP_ROUND_HALF_UP);
     return $transferredAmount;
   }
 
