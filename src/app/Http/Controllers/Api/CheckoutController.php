@@ -11,18 +11,20 @@ use App\Services\Api\Checkout\Models\NoRecipient;
 use App\Services\Api\Checkout\Models\RegisteredRecipient;
 use App\Services\Api\CountryService;
 use App\Services\Api\RecipientService;
+use App\Services\Api\RelationshipService;
 use App\Services\Api\UserService;
 
 class CheckoutController extends Controller
 {
-  protected $userService, $countryService, $recipientService, $bankService;
+  protected $userService, $countryService, $recipientService, $bankService, $relationshipService;
 
-  public function __construct(UserService $userService, CountryService $countryService, RecipientService $recipientService, BankService $bankService)
+  public function __construct(UserService $userService, CountryService $countryService, RecipientService $recipientService, BankService $bankService, RelationshipService $relationshipService)
   {
     $this->userService = $userService;
     $this->countryService = $countryService;
     $this->recipientService = $recipientService;
     $this->bankService = $bankService;
+    $this->relationshipService = $relationshipService;
   }
 
   public function precheckout(PreCheckoutRequest $preCheckoutRequest)
@@ -70,6 +72,7 @@ class CheckoutController extends Controller
     if ($recipientId) {
       $savedRecipient = $this->recipientService->findUserRecipient($user, $recipientId);
       $bank = $this->bankService->find($savedRecipient->bank_id);
+      $relationship = $this->relationshipService->find($savedRecipient->relationship_id);
 
       $recipient = new RegisteredRecipient(
         $savedRecipient->first_name,
@@ -77,17 +80,20 @@ class CheckoutController extends Controller
         $savedRecipient->email,
         $savedRecipient->account_number,
         $bank,
+        $relationship,
         $savedRecipient->id
       );
     } else {
-      $bank = $this->bankService->find($checkoutRequest->input('recipient.city_id'));
+      $bank = $this->bankService->find($checkoutRequest->input('recipient.bank_id'));
+      $relationship = $this->relationshipService->find($checkoutRequest->input('recipient.relationship_id'));
 
       $recipient = new NewRecipient(
         $checkoutRequest->input('recipient.first_name'),
         $checkoutRequest->input('recipient.last_name'),
         $checkoutRequest->input('recipient.email'),
         $checkoutRequest->input('recipient.account_number'),
-        $bank
+        $bank,
+        $relationship
       );
     }
 

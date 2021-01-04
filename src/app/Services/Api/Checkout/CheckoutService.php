@@ -115,6 +115,7 @@ class CheckoutService
             'email' => $recipient->email,
             'account_number' => $recipient->accountNumber,
             'bank_id' => $recipient->bank->id,
+            'relationship_id' => $recipient->relationship->id,
             'user_id' => $this->user->id
           ]);
 
@@ -127,7 +128,8 @@ class CheckoutService
               'last_name' => $recipient->lastName,
               'email' => $recipient->email,
               'account_number' => $recipient->accountNumber,
-              'bank_id' => $recipient->bank->id
+              'bank_id' => $recipient->bank->id,
+              'relationship_id' => $recipient->relationship->id
             ]);
 
           $recipientId = $recipient->recipientId;

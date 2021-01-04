@@ -15,8 +15,9 @@ class Recipient extends Model
     'last_name',
     'email',
     'account_number',
-    'city_id',
-    'user_id'
+    'bank_id',
+    'user_id',
+    'relationship_id'
   ];
 
   public function bank()
