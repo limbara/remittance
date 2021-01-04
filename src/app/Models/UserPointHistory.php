@@ -15,7 +15,8 @@ class UserPointHistory extends Model
     'description',
     'type',
     'amount',
-    'created_at'
+    'created_at',
+    'user_id'
   ];
 
   public function user()

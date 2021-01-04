@@ -29,6 +29,13 @@ Route::group([
   Route::post('/checkout', 'CheckoutController@checkout');
 
   Route::group([
+    'prefix' => 'vouchers',
+  ], function () {
+
+    Route::post('/{voucherId}/redeem', 'VoucherController@redeem');
+  });
+
+  Route::group([
     'prefix' => '/transactions'
   ], function () {
 
