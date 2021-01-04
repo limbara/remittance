@@ -69,16 +69,17 @@ class CheckoutController extends Controller
     $countryTo = $this->countryService->find($checkoutRequest->input('country_to'));
 
     $recipientId = $checkoutRequest->input('recipient_id', null);
+
     if ($recipientId) {
       $savedRecipient = $this->recipientService->findUserRecipient($user, $recipientId);
-      $bank = $this->bankService->find($savedRecipient->bank_id);
-      $relationship = $this->relationshipService->find($savedRecipient->relationship_id);
+      $bank = $this->bankService->find($checkoutRequest->input('recipient.bank_id', $savedRecipient->bank_id));
+      $relationship = $this->relationshipService->find($checkoutRequest->input('recipient.relationship_id', $savedRecipient->relationship_id));
 
       $recipient = new RegisteredRecipient(
-        $savedRecipient->first_name,
-        $savedRecipient->last_name,
-        $savedRecipient->email,
-        $savedRecipient->account_number,
+        $checkoutRequest->input('recipient.first_name', $savedRecipient->first_name),
+        $checkoutRequest->input('recipient.last_name', $savedRecipient->last_name),
+        $checkoutRequest->input('recipient.email', $savedRecipient->email),
+        $checkoutRequest->input('recipient.account_number', $savedRecipient->account_number),
         $bank,
         $relationship,
         $savedRecipient->id

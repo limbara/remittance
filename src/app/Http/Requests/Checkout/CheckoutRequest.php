@@ -27,7 +27,7 @@ class CheckoutRequest extends FormRequest
       'recipient.email' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.account_number,recipient.bank_id,recipient.relationship_id|string:max:254',
       'recipient.account_number' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.bank_id,recipient.relationship_id|string|max:100',
       'recipient.bank_id' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.account_number,recipient.relationship_id|int',
-      'recipient.relationship_id' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.account_number,recipient.bank_id|int',
+      'recipient.relationship_id' => 'required_with_all:recipient.first_name,recipient.last_name,recipient.email,recipient.account_number,recipient.bank_id|int|exists:relationships,id',
       'requirements' => 'json|nullable'
     ];
   }
