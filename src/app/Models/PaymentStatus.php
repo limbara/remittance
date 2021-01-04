@@ -12,6 +12,7 @@ class PaymentStatus extends Model
   public $timestamps = false;
 
   protected $fillable = [
+    'payment_id',
     'status',
     'created_at'
   ];

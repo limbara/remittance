@@ -58,6 +58,11 @@ class Transaction extends Model
     return $this->hasMany(TransactionStatus::class);
   }
 
+  public function payment()
+  {
+    return $this->hasOne(Payment::class);
+  }
+
   public function isExpired(): bool
   {
     return Carbon::createFromDate($this->expired_at)->isPast();

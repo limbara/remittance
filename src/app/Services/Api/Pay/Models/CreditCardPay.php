@@ -3,7 +3,9 @@
 namespace App\Services\Api\Pay\Models;
 
 use App\Enums\PaymentMethod;
+use App\Enums\PaymentStatus as EnumsPaymentStatus;
 use App\Models\Payment;
+use App\Models\PaymentStatus;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +26,12 @@ class CreditCardPay extends AbstractPay
         'transaction_id' => $this->transaction->id,
         'created_at' => $this->paymentDateTime->format('Y-m-d H:i:s'),
         'payment_method_id' => PaymentMethod::CREDIT_CARD
+      ]);
+
+      PaymentStatus::create([
+        'payment_id' => $payment->id,
+        'status' => EnumsPaymentStatus::PAID,
+        'created_at' => $this->paymentDateTime->format('Y-m-d H:i:s')
       ]);
 
       DB::commit();

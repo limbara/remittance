@@ -29,6 +29,7 @@ class BankTransferPay extends AbstractPay
       ]);
 
       PaymentStatus::create([
+        'payment_id' => $payment->id,
         'status' => EnumsPaymentStatus::PAID,
         'created_at' => $this->paymentDateTime->format('Y-m-d H:i:s')
       ]);

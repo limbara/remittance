@@ -3,33 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Transaction\PayRequest;
-use App\Models\Payment;
-use App\Models\Transaction;
 use App\Services\Api\Pay\PayService;
+use App\Services\Api\TransactionService;
 use App\Services\Api\UserService;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-  protected $payService, $userService;
+  protected $payService, $userService, $transactionService;
 
-  public function __construct(PayService $payService, UserService $userService)
+  public function __construct(PayService $payService, UserService $userService, TransactionService $transactionService)
   {
     $this->payService = $payService;
     $this->userService = $userService;
+    $this->transactionService = $transactionService;
   }
 
-  public function detail(string $transactionId)
+  public function detail(Request $request, string $transactionId)
   {
-    $transaction = Transaction::find($transactionId);
+    $user = $this->userService->find($request->input('user_id'));
 
-    $payment = Payment::where('transaction_id', $transactionId)->first();
+    $transaction = $this->transactionService->findUserTransaction($user, $transactionId);
+    $transaction->payment;
 
     return response()->json([
       'transaction' => $transaction,
-      'payment' => $payment
     ]);
   }
-
 
   public function pay(PayRequest $payRequest, string $transactionId)
   {
